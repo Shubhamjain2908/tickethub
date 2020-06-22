@@ -9,12 +9,17 @@ export const errorHandler = (
     next: NextFunction
 ) => {
     if (err instanceof RequestValidationError) {
-        console.log('Request validation error');
-    } else if (err instanceof DatabaseConnectionError) {
-        console.log('Database connection error');
+        const formattedErrors = err.errors.map(error => {
+            return { message: error.msg, field: error.param };
+        });
+        return res.status(400).send({ errors: formattedErrors });
     }
 
-    res.status(400).send({
-        message: err.message
+    if (err instanceof DatabaseConnectionError) {
+        return res.status(500).send({ errors: [{ message: err.reason }] });
+    }
+
+    return res.status(400).send({
+        errors: [{ message: 'Something went wrong!!!' }]
     });
 };
