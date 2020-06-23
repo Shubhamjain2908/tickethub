@@ -35,10 +35,13 @@ router.post(
     await user.save();
 
     // Generating JWT
-    const userJwt = jwt.sign({
-      id: user._id,
-      email: user.email
-    }, 'sjain');
+    const userJwt = jwt.sign(
+      {
+        id: user._id,
+        email: user.email
+      },
+      process.env.JWT_KEY!  // ! use to bypass the typescript check
+    );
 
     // Store it on session
     req.session = {
