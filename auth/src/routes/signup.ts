@@ -37,7 +37,7 @@ router.post(
     // Generating JWT
     const userJwt = jwt.sign(
       {
-        id: user._id,
+        id: user.id,
         email: user.email
       },
       process.env.JWT_KEY!  // ! use to bypass the typescript check
