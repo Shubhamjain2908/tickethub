@@ -1,11 +1,10 @@
+import { BadRequestError, validateRequest } from '@tickethub/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-
-import { Password } from '../services/password';
 import { User } from '../models/user';
-import { validateRequest } from '../middlewares/validate-request';
-import { BadRequestError } from '../errors/bad-request-error';
+import { Password } from '../services/password';
+
 
 const router = express.Router();
 
@@ -56,3 +55,4 @@ router.post(
 );
 
 export { router as signinRouter };
+
