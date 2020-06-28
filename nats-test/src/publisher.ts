@@ -7,4 +7,15 @@ const stan = nats.connect('tickethub', 'abc', {
 
 stan.on('connect', () => {
     console.log('Publisher connected to NATS');
+
+    // NATS only recieves raw JSON data
+    const data = JSON.stringify({
+        id: '123',
+        title: 'concert',
+        price: 20
+    });
+
+    stan.publish('ticket:created', data, () => {
+        console.log('Created Event published');
+    });
 });
