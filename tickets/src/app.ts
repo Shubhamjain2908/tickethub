@@ -1,4 +1,4 @@
-import { errorHandler, NotFoundError } from '@tickethub/common';
+import { currentUser, errorHandler, NotFoundError } from '@tickethub/common';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import express from 'express';
@@ -15,6 +15,7 @@ app.use(
         secure: process.env.NODE_ENV !== 'test'    // Must be on https connection except on test env
     })
 );
+app.use(currentUser);
 
 app.use(createTicketRouter);
 
