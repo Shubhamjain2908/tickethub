@@ -1,7 +1,6 @@
 // import { body } from 'express-validator';
 import {
-    // validateRequest,
-    // NotAuthorizedError,
+    NotAuthorizedError,
     NotFoundError,
     requireAuth
 } from '@tickethub/common';
@@ -17,7 +16,12 @@ router.put('/api/tickets/:id', requireAuth, async (req: Request, res: Response) 
         throw new NotFoundError();
     }
 
+    if (ticket.userId !== req.currentUser!.id) {
+        throw new NotAuthorizedError();
+    }
+
     res.send(ticket);
 });
 
 export { router as updateTicketRouter };
+
