@@ -11,13 +11,21 @@ const stan = nats.connect('tickethub', randomBytes(4).toString('hex'), {
 stan.on('connect', () => {
     console.log('Listener connected to NATS');
 
-    const subscription = stan.subscribe('ticket:created', 'order-service-queue-group');
+    const options = stan
+        .subscriptionOptions()
+        .setManualAckMode(true);    // Set the mannual acknowledgement to true
+    const subscription = stan.subscribe(
+        'ticket:created',
+        'order-service-queue-group',
+        options
+    );
 
     subscription.on('message', (msg: Message) => {
         const data = msg.getData();
         if (typeof data === 'string') {
             console.log(`Recieved event #${msg.getSequence()}, with data:`, JSON.parse(data));
         }
-        console.log('Message recieved');
+
+        msg.ack();
     });
 });
