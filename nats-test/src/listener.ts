@@ -18,10 +18,11 @@ stan.on('connect', () => {
 
     const options = stan
         .subscriptionOptions()
-        .setManualAckMode(true);    // Set the mannual acknowledgement to true
+        .setManualAckMode(true)    // Set the mannual acknowledgement to true
+        .setDeliverAllAvailable();
+
     const subscription = stan.subscribe(
         'ticket:created',
-        'order-service-queue-group',
         options
     );
 
