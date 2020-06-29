@@ -16,18 +16,18 @@ spec:
                 - name: nats
                   image: nats-streaming:0.17.0
                   args: [
-                      '-p',
+                      '-p',     # Client Port
                       '4222',
-                      '-m',
+                      '-m',     # Monitoring port
                       '8222',
-                      '-hbi',
+                      '-hbi',   # Interval at which server sends heartbeat to a client
                       '5s',
-                      '-hbt',
+                      '-hbt',   # How long server waits for a heartbeat response
                       '5s',
-                      '-hbf',
+                      '-hbf',   # Number of failed heartbeats before server closes the client connection
                       '2',
-                      '-SD',
-                      '-cid',
+                      '-SD',    # Enable STAN debugging output
+                      '-cid',   #  Cluster ID
                       'tickethub'
                   ]
 ---
