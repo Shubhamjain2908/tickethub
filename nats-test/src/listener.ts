@@ -19,10 +19,12 @@ stan.on('connect', () => {
     const options = stan
         .subscriptionOptions()
         .setManualAckMode(true)    // Set the mannual acknowledgement to true
-        .setDeliverAllAvailable();
+        .setDeliverAllAvailable()
+        .setDurableName('accounting-service');
 
     const subscription = stan.subscribe(
         'ticket:created',
+        'queue-group-name',
         options
     );
 
