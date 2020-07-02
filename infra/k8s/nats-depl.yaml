@@ -15,21 +15,22 @@ spec:
             containers:
                 - name: nats
                   image: nats-streaming:0.17.0
-                  args: [
-                      '-p',     # Client Port
-                      '4222',
-                      '-m',     # Monitoring port
-                      '8222',
-                      '-hbi',   # Interval at which server sends heartbeat to a client
-                      '5s',
-                      '-hbt',   # How long server waits for a heartbeat response
-                      '5s',
-                      '-hbf',   # Number of failed heartbeats before server closes the client connection
-                      '2',
-                      '-SD',    # Enable STAN debugging output
-                      '-cid',   #  Cluster ID
-                      'tickethub'
-                  ]
+                  args:
+                      [
+                          "-p",
+                          "4222",
+                          "-m",
+                          "8222",
+                          "-hbi",
+                          "5s",
+                          "-hbt",
+                          "5s",
+                          "-hbf",
+                          "2",
+                          "-SD",
+                          "-cid",
+                          "tickethub",
+                      ]
 ---
 apiVersion: v1
 kind: Service
@@ -42,7 +43,7 @@ spec:
         - name: client
           protocol: TCP
           port: 4222
-          targetPort: 422
+          targetPort: 4222
         - name: monitoring
           protocol: TCP
           port: 8222
