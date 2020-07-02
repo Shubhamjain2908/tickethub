@@ -12,7 +12,7 @@ const start = async () => {
     try {
         await natsWrapper.connect('tickethub', 'asdasdasdasd', 'http://nats-srv:4222');
 
-        natsWrapper.client.on('connect', () => {
+        natsWrapper.client.on('close', () => {
             console.log('Nats connection closed!');
             process.exit();
         });
