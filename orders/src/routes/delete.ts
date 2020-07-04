@@ -1,6 +1,8 @@
 import { NotAuthorizedError, NotFoundError, requireAuth } from '@tickethub/common';
 import express, { Request, Response } from 'express';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { Order, OrderStatus } from '../models/order';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -20,6 +22,13 @@ router.delete('/api/orders/:orderId', requireAuth,
         await order.save();
 
         // publishing an event saying this was cancelled!
+        new OrderCancelledPublisher(natsWrapper.client).publish({
+            id: order.id,
+            ticket: {
+                id: order.ticket.id,
+            }
+        });
+
 
         res.status(204).send(order);
     }
