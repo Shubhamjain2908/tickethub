@@ -11,18 +11,18 @@ const setup = async () => {
     const data: OrderCreatedEvent['data'] = {
         id: mongoose.Types.ObjectId().toHexString(),
         version: 0,
-        expiresAt: new Date().toISOString(),
+        expiresAt: 'alskdjf',
+        userId: 'alskdjf',
         status: OrderStatus.Created,
         ticket: {
-            id: 'CKMB',
-            price: 10
+            id: 'alskdfj',
+            price: 10,
         },
-        userId: 'lsksl'
     };
 
     // @ts-ignore
     const msg: Message = {
-        ack: jest.fn()
+        ack: jest.fn(),
     };
 
     return { listener, data, msg };
@@ -35,7 +35,6 @@ it('replicates the order info', async () => {
 
     const order = await Order.findById(data.id);
 
-    expect(order).toBeDefined();
     expect(order!.price).toEqual(data.ticket.price);
 });
 
