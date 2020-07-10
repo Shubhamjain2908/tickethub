@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 declare global {
     namespace NodeJS {
         interface Global {
-            signin(): Array<string>
+            signin(id?: string): Array<string>
         }
     }
 }
@@ -40,10 +40,10 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
-global.signin = () => {
+global.signin = (id?: string) => {
     // Build a JWT payload. { id, email }
     const payload = {
-        id: new mongoose.Types.ObjectId().toHexString(),
+        id: id || new mongoose.Types.ObjectId().toHexString(),
         email: 'test@test.com'
     }
 
