@@ -66,7 +66,7 @@ orderSchema.statics.build = (attrs: OrderAttrs) => {
         _id: attrs.id,
         version: attrs.version,
         userId: attrs.userId,
-        price: attrs.version,
+        price: attrs.price,
         status: attrs.status
     });
 };
