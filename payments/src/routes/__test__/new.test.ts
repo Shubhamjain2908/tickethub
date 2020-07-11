@@ -5,8 +5,6 @@ import { app } from '../../app';
 import { Order } from '../../models/order';
 import { stripe } from '../../stripe';
 
-jest.mock('../../stripe');
-
 it('returns a 404 when purchasing an order that does not exist', async () => {
     await request(app)
         .post('/api/payments')
@@ -61,9 +59,10 @@ it('returns a 400 when purchasing a cancelled order', async () => {
 
 it('returns a 201 with valida inputs', async () => {
     const userId = mongoose.Types.ObjectId().toHexString();
+    const price = Math.floor(Math.random() * 1000);
     const order = Order.build({
         id: mongoose.Types.ObjectId().toHexString(),
-        price: 12,
+        price,
         status: OrderStatus.Created,
         userId,
         version: 0
@@ -74,13 +73,15 @@ it('returns a 201 with valida inputs', async () => {
         .post('/api/payments')
         .set('Cookie', global.signin(userId))
         .send({
-            token: 'token_visa',    // token will work in test env
+            token: 'tok_visa',    // token will work in test env
             orderId: order.id
         })
         .expect(201);
 
-    const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
-    expect(chargeOptions.source).toEqual('token_visa');
-    expect(chargeOptions.amount).toEqual(12 * 100);
-    expect(chargeOptions.currency).toEqual('usd');
+    const stripeCharges = await stripe.charges.list({ limit: 50 });
+
+    const stripeCharge = stripeCharges.data.find(charge => charge.amount === price);
+
+    expect(stripeCharge).toBeDefined();
+    expect(stripeCharge!.currency).toEqual('usd');
 });

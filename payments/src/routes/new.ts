@@ -29,10 +29,26 @@ router.post(
             throw new BadRequestError('Cannot pay for an cancelled order');
         }
 
+        // Used for Indian Transactions: description & shipping mandatory
+        const options = {
+            description: 'Software development services',
+            shipping: {
+                name: 'Shubham Jain',
+                address: {
+                    line1: '510 Townsend St',
+                    postal_code: '98140',
+                    city: 'San Francisco',
+                    state: 'CA',
+                    country: 'US',
+                },
+            },
+        };
+
         await stripe.charges.create({
             currency: 'usd',
-            amount: order.price * 100,
-            source: token
+            amount: order.price,
+            source: token,
+            ...options
         });
 
         res.status(201).send({ success: true });
