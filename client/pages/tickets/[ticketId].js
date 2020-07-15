@@ -15,7 +15,8 @@ const TicketShow = ({ ticket }) => {
             <h1>{ticket.title}</h1>
             <h4>Price: {ticket.price}</h4>
             {errors}
-            <button onClick={doRequest} className="btn btn-primary">Purchase</button>
+            {/* here doRequest is going as a default event first argument */}
+            <button onClick={() => doRequest()} className="btn btn-primary">Purchase</button>
         </div>
     );
 };
